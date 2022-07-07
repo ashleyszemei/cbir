@@ -81,9 +81,9 @@ class Color(object):
   
   def extract_features(self, db, query_image_filepath=None, is_query=False, verbose=True):
     if h_type == 'global':
-      sample_cache = "histogram_cache-{}-n_bin{}".format(h_type, n_bin)
+      db_img_features_cache = "histogram_cache-{}-n_bin{}".format(h_type, n_bin)
     elif h_type == 'region':
-      sample_cache = "histogram_cache-{}-n_bin{}-n_slice{}".format(h_type, n_bin, n_slice)
+      db_img_features_cache = "histogram_cache-{}-n_bin{}-n_slice{}".format(h_type, n_bin, n_slice)
 
     # print("Now making Color samples.")
 
@@ -91,27 +91,27 @@ class Color(object):
       # If extracting features from all images in database
       try:
         # Use cached image features
-        samples = cPickle.load(open(os.path.join(cache_dir, sample_cache), "rb", True))
+        db_images = cPickle.load(open(os.path.join(cache_dir, db_img_features_cache), "rb", True))
         if verbose:
-          print("Using cache..., config=%s, distance=%s, depth=%s" % (sample_cache, d_type, depth))
+          print("Using cache..., config=%s, distance=%s, depth=%s" % (db_img_features_cache, d_type, depth))
       except:
         if verbose:
-          print("Counting histogram..., config=%s, distance=%s, depth=%s" % (sample_cache, d_type, depth))
-        samples = []
+          print("Counting histogram..., config=%s, distance=%s, depth=%s" % (db_img_features_cache, d_type, depth))
+        db_images = []
         data = db.get_data()
         for d in data.itertuples():
           d_img, d_cls = getattr(d, "img"), getattr(d, "cls")
 
           # Generate color histogram for each image in the database
           d_hist = self.histogram(d_img, type=h_type, n_bin=n_bin, n_slice=n_slice)
-          samples.append({
+          db_images.append({
                           'img':  d_img,
                           'cls':  d_cls,
                           'hist': d_hist
                         })
         # Cache extracted image features
-        cPickle.dump(samples, open(os.path.join(cache_dir, sample_cache), "wb", True))
-      return samples
+        cPickle.dump(db_images, open(os.path.join(cache_dir, db_img_features_cache), "wb", True))
+      return db_images
     elif (is_query == True):
       # If extracting features from single image
       d_hist = self.histogram(query_image_filepath, type=h_type, n_bin=n_bin, n_slice=n_slice)

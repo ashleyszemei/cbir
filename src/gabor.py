@@ -155,9 +155,9 @@ class Gabor(object):
   
   def extract_features(self, db, query_image_filepath=None, is_query=False, verbose=True):
     if h_type == 'global':
-      sample_cache = "gabor-{}-theta{}-frequency{}-sigma{}-bandwidth{}".format(h_type, theta, frequency, sigma, bandwidth)
+      db_img_features_cache = "gabor-{}-theta{}-frequency{}-sigma{}-bandwidth{}".format(h_type, theta, frequency, sigma, bandwidth)
     elif h_type == 'region':
-      sample_cache = "gabor-{}-n_slice{}-theta{}-frequency{}-sigma{}-bandwidth{}".format(h_type, n_slice, theta, frequency, sigma, bandwidth)
+      db_img_features_cache = "gabor-{}-n_slice{}-theta{}-frequency{}-sigma{}-bandwidth{}".format(h_type, n_slice, theta, frequency, sigma, bandwidth)
 
     # print("Now making Gabor samples.")
 
@@ -165,31 +165,31 @@ class Gabor(object):
       # If extracting features from all images in database
       try:
         # Use cached image features
-        samples = cPickle.load(open(os.path.join(cache_dir, sample_cache), "rb", True))
-        for sample in samples:
+        db_images = cPickle.load(open(os.path.join(cache_dir, db_img_features_cache), "rb", True))
+        for sample in db_images:
           sample['hist'] /= np.sum(sample['hist'])  # normalize
         if verbose:
-          print("Using cache..., config=%s, distance=%s, depth=%s" % (sample_cache, d_type, depth))
+          print("Using cache..., config=%s, distance=%s, depth=%s" % (db_img_features_cache, d_type, depth))
       except:
         if verbose:
-          print("Counting histogram..., config=%s, distance=%s, depth=%s" % (sample_cache, d_type, depth))
+          print("Counting histogram..., config=%s, distance=%s, depth=%s" % (db_img_features_cache, d_type, depth))
 
-        samples = []
+        db_images = []
         data = db.get_data()
         for d in data.itertuples():
           d_img, d_cls = getattr(d, "img"), getattr(d, "cls")
 
           # Generate Gabor histogram for each image in the database
           d_hist = self.gabor_histogram(d_img, type=h_type, n_slice=n_slice)
-          samples.append({
+          db_images.append({
             'img': d_img,
             'cls': d_cls,
             'hist': d_hist
           })
         # Cache extracted image features
-        cPickle.dump(samples, open(os.path.join(cache_dir, sample_cache), "wb", True))
-        print("Gabor samples: ", samples)
-      return samples
+        cPickle.dump(db_images, open(os.path.join(cache_dir, db_img_features_cache), "wb", True))
+        print("Gabor samples: ", db_images)
+      return db_images
     elif is_query == True:
       # If extracting features from single image
       d_hist = self.gabor_histogram(query_image_filepath, type=h_type, n_slice=n_slice)

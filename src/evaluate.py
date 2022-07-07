@@ -127,24 +127,24 @@ def evaluate(db, sample_db_fn, depth=None, d_type='d1'):
   return ret
 
 
-def extract_features_from_db(db, f_class=None, f_instance=None, depth=None, d_type='d1'):
+def extract_features_from_db(db, feature_class=None, feature_instance=None, depth=None, d_type='d1'):
   ''' infer the whole database
 
     arguments
       db     : an instance of class Database
-      f_class: a class that generate features, needs to implement make_samples method
+      feature_class: a class that generate features, needs to implement make_samples method
       depth  : retrieved depth during inference, the default depth is equal to database size
       d_type : distance type
   '''
-  assert f_class or f_instance, "needs to give class_name or an instance of class"
+  assert feature_class or feature_instance, "needs to give class_name or an instance of class"
 
   classes = db.get_class()
   ret = {c: [] for c in classes}
 
-  if f_class:
-    f = f_class()
-  elif f_instance:
-    f = f_instance
+  if feature_class:
+    f = feature_class()
+  elif feature_instance:
+    f = feature_instance
   samples = f.extract_features(db=db)
   # print(samples)
   for query in samples:

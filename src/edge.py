@@ -115,9 +115,9 @@ class Edge(object):
   
   def extract_features(self, db, query_image_filepath=None, is_query=False, verbose=True):
     if h_type == 'global':
-      sample_cache = "edge-{}-stride{}".format(h_type, stride)
+      db_img_features_cache = "edge-{}-stride{}".format(h_type, stride)
     elif h_type == 'region':
-      sample_cache = "edge-{}-stride{}-n_slice{}".format(h_type, stride, n_slice)
+      db_img_features_cache = "edge-{}-stride{}-n_slice{}".format(h_type, stride, n_slice)
 
     print("Now making Edge samples.")
 
@@ -125,31 +125,31 @@ class Edge(object):
       # If extracting features from all images in database
       try:
         # Use cached image features
-        samples = cPickle.load(open(os.path.join(cache_dir, sample_cache), "rb", True))
-        for sample in samples:
-          sample['hist'] /= np.sum(sample['hist'])  # normalize
+        db_images = cPickle.load(open(os.path.join(cache_dir, db_img_features_cache), "rb", True))
+        for db_image in db_images:
+          db_image['hist'] /= np.sum(db_image['hist'])  # normalize
         if verbose:
-          print("Using cache..., config=%s, distance=%s, depth=%s" % (sample_cache, d_type, depth))
+          print("Using cache..., config=%s, distance=%s, depth=%s" % (db_img_features_cache, d_type, depth))
       except:
         if verbose:
-          print("Counting histogram..., config=%s, distance=%s, depth=%s" % (sample_cache, d_type, depth))
+          print("Counting histogram..., config=%s, distance=%s, depth=%s" % (db_img_features_cache, d_type, depth))
 
-        samples = []
+        db_images = []
         data = db.get_data()
         for d in data.itertuples():
           d_img, d_cls = getattr(d, "img"), getattr(d, "cls")
 
           # Generate edge histogram for each image in the database
           d_hist = self.histogram(d_img, type=h_type, n_slice=n_slice)
-          samples.append({
+          db_images.append({
             'img': d_img,
             'cls': d_cls,
             'hist': d_hist
           })
         # Cache extracted image features
-        cPickle.dump(samples, open(os.path.join(cache_dir, sample_cache), "wb", True))
-        print("Edge samples: ", samples)
-      return samples
+        cPickle.dump(db_images, open(os.path.join(cache_dir, db_img_features_cache), "wb", True))
+        print("Edge samples: ", db_images)
+      return db_images
     elif is_query == True:
       # If extracting features from single image
       # Generate edge histogram for the query image
