@@ -11,6 +11,8 @@ from src.edge import Edge
 from src.gabor import Gabor
 from src.fusion import FeatureFusion
 
+# This is the texture branch
+
 app = Flask(__name__)
 
 UPLOAD_FOLDER = "static/upload"
