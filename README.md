@@ -12,10 +12,10 @@ For reference, my folder path is C:\Users\User\PycharmProjects\cbir
 and the path to my virtual environment is C:\Users\User\PycharmProjects\cbir\venv
 
 Inside the project directory, activate the virtual environment.
-  venv\scripts\activate
+    C:\Users\User\PycharmProjects\cbir> venv\scripts\activate
 
 After the virtual environment has been activated, install the packages.
-  pip install requirements.txt
+    (venv) C:\Users\User\PycharmProjects\cbir> pip install requirements.txt
 
 After requirements have been installed, type the following command:
-  python cbir.py
+    (venv) C:\Users\User\PycharmProjects\cbir> python cbir.py
