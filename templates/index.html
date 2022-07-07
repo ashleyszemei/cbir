@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    </head>
+    <body>
+        <div class="container">
+            <h2>Content-Based Image Retrieval</h2>
+            <br/>
+            <form method="POST" enctype="multipart/form-data">
+                <label>Upload an image (.jpg): </label>
+                <input type="file" name="query_image" accept="image/jpeg">
+                <br/>
+                <input type="checkbox" id="feature_color" name="image_feature" value="Color">
+                <label for="feature_color"> Color histogram</label><br>
+                <input type="checkbox" id="feature_gabor" name="image_feature" value="Gabor">
+                <label for="feature_gabor"> Gabor filter</label><br>
+                <input type="checkbox" id="feature_edge" name="image_feature" value="Edge">
+                <label for="feature_edge"> Edge histogram</label><br>
+                <br/>
+                <input type="submit">
+            </form>
+            <h3>Query</h3>
+            <img src="{{ query_image_filepath }}" height="200px">
+            <h3>Results</h3>
+            <h4><span>MMAP: </span><span>{{ MMAP }}</span></h4>
+            {% if image_results %}
+            {% for result in image_results %}
+            <figure style="float: left; margin-right: 20px; margin-bottom: 20px;">
+<!--                <img src="{{ url_for('static', filename=result.img) }}" height="200px">-->
+                <img src="{{ result.img }}" height="200px">
+                <figcaption>{{ result.dis }}</figcaption>
+            </figure>
+            {% endfor %}
+            {% endif %}
+            <br/>
+
+        </div>
+    </body>
+</html>
