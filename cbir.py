@@ -62,7 +62,7 @@ def home():
             query = f.extract_features(db=None, query_image_filepath=query_image_filepath, is_query=True)
 
             # Extract features from all images in the database
-            APs, samples = extract_features_from_db(db, f_class=feature_class, d_type=d_type)
+            APs, db_images = extract_features_from_db(db, feature_class=feature_class, d_type=d_type)
             cls_MAPs = []
             for cls, cls_APs in APs.items():
                 MAP = np.mean(cls_APs)
@@ -81,7 +81,7 @@ def home():
             query = fusion.extract_features_from_query_img(query_image_filepath)
 
             # Extract multiple features from all images in the database
-            APs, samples = extract_features_from_db(db, f_instance=fusion, d_type=d_type)
+            APs, db_images = extract_features_from_db(db, feature_instance=fusion, d_type=d_type)
             cls_MAPs = []
             for cls, cls_APs in APs.items():
                 MAP = np.mean(cls_APs)
@@ -92,7 +92,7 @@ def home():
             MMAP = np.mean(cls_MAPs)
 
         # Calculate the similarity between query image and database images, and return the 5 most similar images
-        _, results = infer(query, samples, db=None, sample_db_fn=None, depth=5, d_type='d1')
+        _, results = infer(query, db_images, db=None, sample_db_fn=None, depth=5, d_type='d1')
 
         # Make a copy of results
         image_results = results.copy()
