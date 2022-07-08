@@ -4,14 +4,16 @@ from __future__ import print_function
 
 # from evaluate import distance, extract_features_from_db
 # from DB import Database
-from src.evaluate import distance, extract_features_from_db
-from src.DB import Database
+# from src.evaluate import distance, extract_features_from_db
+# from src.DB import Database
+
 
 from six.moves import cPickle
 import numpy as np
 import scipy.misc
 import itertools
 import os
+import imageio
 
 
 # configs for histogram
@@ -38,7 +40,7 @@ class Color(object):
     if isinstance(input, np.ndarray):
       img = input.copy()
     else:
-      img = scipy.misc.imread(input, mode='RGB')
+      img = imageio.imread(input, pilmode='RGB')
     height, width, channel = img.shape
     bins = np.linspace(0, 256, n_bin+1, endpoint=True)  # slice bins equally for each channel
   

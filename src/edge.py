@@ -4,14 +4,15 @@ from __future__ import print_function
 
 # from evaluate import extract_features_from_db
 # from DB import Database
-from src.evaluate import extract_features_from_db
-from src.DB import Database
+# from src.evaluate import extract_features_from_db
+# from src.DB import Database
 
 from six.moves import cPickle
 import numpy as np
 import scipy.misc
 from math import sqrt
 import os
+import  imageio
 
 
 stride = (1, 1)
@@ -62,7 +63,7 @@ class Edge(object):
     if isinstance(input, np.ndarray):  # examinate input type
       img = input.copy()
     else:
-      img = scipy.misc.imread(input, mode='RGB')
+      img = imageio.imread(input, pilmode='RGB')
     height, width, channel = img.shape
   
     if type == 'global':

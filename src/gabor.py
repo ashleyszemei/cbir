@@ -4,8 +4,8 @@ from __future__ import print_function
 
 # from evaluate import *
 # from DB import Database
-from src.evaluate import *
-from src.DB import Database
+# from src.evaluate import *
+# from src.DB import Database
 
 from skimage.filters import gabor_kernel
 from skimage import color
@@ -17,6 +17,7 @@ from six.moves import cPickle
 import numpy as np
 import scipy.misc
 import os
+import  imageio
 
 
 theta     = 4
@@ -70,7 +71,7 @@ class Gabor(object):
     if isinstance(input, np.ndarray):  # examinate input type
       img = input.copy()
     else:
-      img = scipy.misc.imread(input, mode='RGB')
+      img = imageio.imread(input, pilmode='RGB')
     height, width, channel = img.shape
   
     if type == 'global':

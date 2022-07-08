@@ -17,11 +17,11 @@ kiwisolver==1.3.1
 MarkupSafe==2.1.1
 matplotlib==3.4.2
 mkl==2022.1.0
-mkl-fft==1.3.0
-mkl-random==1.2.0
-mkl-service==2.3.0
+mkl-fft==1.3.1
+mkl-random
+mkl-service
 networkx==2.5.1
-numpy==1.19.5
+numpy
 pandas==1.2.5
 Pillow==8.2.0
 pyparsing==2.4.7
@@ -29,7 +29,7 @@ python-dateutil==2.8.1
 pytz==2021.1
 PyWavelets==1.1.1
 scikit-image==0.18.1
-scipy==1.1.0
+scipy
 six==1.16.0
 tbb==2021.6.0
 tifffile==2021.6.14
