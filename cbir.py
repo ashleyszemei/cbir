@@ -83,6 +83,7 @@ def home():
             # Extract multiple features from query image
             fusion = FeatureFusion(features=lowercase_features)
             query = fusion.extract_features_from_query_img(query_image_filepath)
+            print("Query: ", query)
 
             # Extract multiple features from all images in the database
             APs, db_images = extract_features_from_db(db, feature_instance=fusion, d_type=d_type)

@@ -14,6 +14,7 @@ from src.DB import Database
 from src.color import Color
 from src.edge  import Edge
 from src.gabor import Gabor
+from src.glcm import Glcm
 
 
 import numpy as np
@@ -24,7 +25,7 @@ import os
 d_type   = 'd1'
 depth    = 30
 
-feat_pools = ['color', 'edge', 'gabor']
+feat_pools = ['color', 'edge', 'gabor', 'glcm']
 
 # result dir
 result_dir = 'result'
@@ -70,6 +71,8 @@ class FeatureFusion(object):
       f_c = Edge()
     elif f_class == 'gabor':
       f_c = Gabor()
+    elif f_class == 'glcm':
+      f_c = Glcm()
     return f_c.extract_features(db=None, query_image_filepath=query_image_filepath, is_query=True, verbose=False)
 
   # Extract one type of feature from all images in database
@@ -80,6 +83,8 @@ class FeatureFusion(object):
       f_c = Edge()
     elif f_class == 'gabor':
       f_c = Gabor()
+    elif f_class == 'glcm':
+      f_c = Glcm()
     return f_c.extract_features(db, verbose=False)
 
   # Concatenate image features for the query image
