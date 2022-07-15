@@ -4,14 +4,15 @@ from __future__ import print_function
 
 # from evaluate import distance, extract_features_from_db
 # from DB import Database
-from src.evaluate import distance, extract_features_from_db
-from src.DB import Database
+# from src.evaluate import distance, extract_features_from_db
+# from src.DB import Database
 
 from six.moves import cPickle
 import numpy as np
-import scipy.misc
+# import scipy.misc
 import itertools
 import os
+import imageio
 
 
 # configs for histogram
@@ -38,7 +39,7 @@ class Color(object):
     if isinstance(input, np.ndarray):
       img = input.copy()
     else:
-      img = scipy.misc.imread(input, mode='RGB')
+      img = imageio.imread(input, pilmode='RGB')
     height, width, channel = img.shape
     bins = np.linspace(0, 256, n_bin+1, endpoint=True)  # slice bins equally for each channel
   
@@ -47,12 +48,12 @@ class Color(object):
   
     elif type == 'region':
       hist = np.zeros((n_slice, n_slice, n_bin ** channel))
-      h_silce = np.around(np.linspace(0, height, n_slice+1, endpoint=True)).astype(int)
-      w_slice = np.around(np.linspace(0, width, n_slice+1, endpoint=True)).astype(int)
+      height_slice = np.around(np.linspace(0, height, n_slice+1, endpoint=True)).astype(int)
+      width_slice = np.around(np.linspace(0, width, n_slice+1, endpoint=True)).astype(int)
   
-      for hs in range(len(h_silce)-1):
-        for ws in range(len(w_slice)-1):
-          img_r = img[h_silce[hs]:h_silce[hs+1], w_slice[ws]:w_slice[ws+1]]  # slice img to regions
+      for hs in range(len(height_slice)-1):
+        for ws in range(len(width_slice)-1):
+          img_r = img[height_slice[hs]:height_slice[hs+1], width_slice[ws]:width_slice[ws+1]]  # slice img to regions
           hist[hs][ws] = self._count_hist(img_r, n_bin, bins, channel)
   
     if normalize:

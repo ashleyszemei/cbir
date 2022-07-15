@@ -9,6 +9,7 @@ from src.DB import Database
 from src.color import Color
 from src.edge import Edge
 from src.gabor import Gabor
+from src.glcm import Glcm
 from src.fusion import FeatureFusion
 
 app = Flask(__name__)
@@ -56,10 +57,13 @@ def home():
                 feature_class = Gabor
             elif feature_type == "Edge":
                 feature_class = Edge
+            elif feature_type == "Glcm":
+                feature_class = Glcm
             f = feature_class()
 
             # Extract features from query image
             query = f.extract_features(db=None, query_image_filepath=query_image_filepath, is_query=True)
+            print("Query: ", query)
 
             # Extract features from all images in the database
             APs, db_images = extract_features_from_db(db, feature_class=feature_class, d_type=d_type)

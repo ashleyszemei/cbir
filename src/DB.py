@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from __future__ import print_function
 
 import pandas as pd
@@ -12,12 +10,12 @@ DB_csv = 'data.csv'
 class Database(object):
 
   def __init__(self):
-    self._gen_csv()
+    self.generate_csv()
     self.data = pd.read_csv(DB_csv)
     self.classes = set(self.data["cls"])
 
   # Generate a CSV file containing the filepath of every image in the database and its class
-  def _gen_csv(self):
+  def generate_csv(self):
     if os.path.exists(DB_csv):
       return
     with open(DB_csv, 'w', encoding='UTF-8') as f:
